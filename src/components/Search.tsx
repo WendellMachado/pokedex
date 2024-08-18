@@ -25,6 +25,7 @@ const SearchInput = styled.input`
   min-width: 25%;
   background-image: url(${searchGlass});
   padding-left: 32px;
+  border-radius: 4px;
 
   @media (max-width: ${theme.mediaQueryBreakpoints.tablet}) {
     width: 80%;
@@ -42,6 +43,7 @@ const SelectTypeInput = styled.select`
   cursor: pointer;
   appearance: none;
   background-image: url(${arrowIcon});
+  border-radius: 4px;
 
   @media (max-width: ${theme.mediaQueryBreakpoints.tablet}) {
     width: 80%;
