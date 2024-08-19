@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import PokemonCard from './PokemonCard';
 import { theme } from '../themes/theme';
+import { useSearchContext } from '../context/SearchContext';
 
 const ResultsList = styled.ul`
   display: grid;
@@ -18,22 +19,21 @@ const ResultsList = styled.ul`
 `;
 
 export const SearchResults = () => {
-  const pokemons: any = [];
-  for (let i = 1; i < 21; i++) {
-    pokemons.push(
-      <PokemonCard
-        name={`pikachu`}
-        sprite={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png`}
-        key={i}
-      />,
-    );
-  }
+  const { filteredPokemonList } = useSearchContext();
+
   return (
     <>
       <ResultsList>
-        {pokemons.map((pokemon: JSX.Element) => pokemon)}
+        {filteredPokemonList.map((pokemon) => {
+          return (
+            <PokemonCard
+              name={pokemon.name}
+              sprite={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+              key={pokemon.id}
+            />
+          );
+        })}
       </ResultsList>
-      ;
     </>
   );
 };

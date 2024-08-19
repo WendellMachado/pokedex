@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import arrowIcon from '../assets/arrow.png';
 import searchGlass from '../assets/searchGlass.png';
 import { theme } from '../themes/theme';
+import { useSearchContext } from '../context/SearchContext';
 
 const ActionWrapper = styled.div`
   display: flex;
@@ -51,12 +52,20 @@ const SelectTypeInput = styled.select`
 `;
 
 export const Search = () => {
+  const { setSearchTerm, searchTerm } = useSearchContext();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <ActionWrapper>
       <SearchInput
         placeholder="Busque por nome ou nº"
         type="text"
         id="searchInput"
+        onChange={(e) => handleInputChange(e)}
+        value={searchTerm}
       />
       <SelectTypeInput id="typeFilter">
         <option value="">{'Busque por tipo'}</option>

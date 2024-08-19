@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import whosThatPokemon from '../assets/whosthatpokemon.png';
 
 const Card = styled.li`
   background-color: #00000044;
@@ -8,6 +9,7 @@ const Card = styled.li`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,7 +21,7 @@ const Card = styled.li`
 
 const PokemonName = styled.h2`
   font-family: 'PokemonClassic';
-  font-size: 1em;
+  font-size: 0.8rem;
   color: #333;
   text-align: center;
   word-wrap: break-word;
@@ -34,7 +36,13 @@ interface PokemonCardProps {
 const PokemonCard = ({ name, sprite }: PokemonCardProps) => {
   return (
     <Card>
-      <img src={sprite} alt={name} />
+      <img
+        src={sprite}
+        alt={name}
+        onError={(e) => {
+          e.currentTarget.src = whosThatPokemon;
+        }}
+      />
       <PokemonName>{name}</PokemonName>
     </Card>
   );
