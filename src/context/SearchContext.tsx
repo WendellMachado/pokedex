@@ -54,11 +54,32 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
   };
 
-  const filteredPokemonList = useMemo(() => {
-    if (!pokemonList) return [];
-    const filtered = pokemonList.filter((pokemon) =>
+  const filterPokemonByName = (pokemonList: Pokemon[]) => {
+    return pokemonList.filter((pokemon) =>
       pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
+  };
+
+  const filterPokemonByNumber = (pokemonList: Pokemon[]) => {
+    return pokemonList.filter((pokemon) =>
+      String(pokemon.id).includes(searchTerm),
+    );
+  };
+
+  const isSearchByName = () => {
+    const isNumeric = !isNaN(Number(searchTerm));
+    if (isNumeric) {
+      return false;
+    }
+    return true;
+  };
+
+  const filteredPokemonList = useMemo(() => {
+    if (!pokemonList) return [];
+
+    const filtered = isSearchByName()
+      ? filterPokemonByName(pokemonList)
+      : filterPokemonByNumber(pokemonList);
 
     const filteredAndPaginated = getPaginatedData(filtered);
 
