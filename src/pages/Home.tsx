@@ -1,11 +1,14 @@
 import { Header } from '../components/Header';
 import { SearchResults } from '../components/SearchResults';
+import { SearchProvider } from '../context/SearchContext';
 
 export const Home = () => {
   return (
     <>
-      <Header />
-      <SearchResults />
+      <SearchProvider>
+        <Header />
+        <SearchResults />
+      </SearchProvider>
     </>
   );
 };

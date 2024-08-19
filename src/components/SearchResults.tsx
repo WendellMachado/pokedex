@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import PokemonCard from './PokemonCard';
 import { theme } from '../themes/theme';
 import { useSearchContext } from '../context/SearchContext';
+import { Pagination } from './Pagination';
 
 const ResultsList = styled.ul`
   display: grid;
@@ -34,6 +35,7 @@ export const SearchResults = () => {
           );
         })}
       </ResultsList>
+      <Pagination />
     </>
   );
 };
