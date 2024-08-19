@@ -83,10 +83,7 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
 
     const filteredAndPaginated = getPaginatedData(filtered);
 
-    const totalFilteredPages =
-      searchTerm.length > 0
-        ? Math.ceil(filtered.length / itemsPerPage)
-        : totalPages;
+    const totalFilteredPages = Math.ceil(filtered.length / itemsPerPage);
 
     setTotalPages(totalFilteredPages);
 
