@@ -3,6 +3,8 @@ import arrowIcon from '../assets/arrow.png';
 import searchGlass from '../assets/searchGlass.png';
 import { theme } from '../themes/theme';
 import { useSearchContext } from '../context/SearchContext';
+import debounce from 'lodash.debounce';
+import { useCallback, useEffect } from 'react';
 
 const ActionWrapper = styled.div`
   display: flex;
@@ -54,9 +56,22 @@ const SelectTypeInput = styled.select`
 export const Search = () => {
   const { setSearchTerm, searchTerm } = useSearchContext();
 
+  const debouncedSetSearchTerm = useCallback(
+    debounce((value: string) => {
+      setSearchTerm(value);
+    }, 20),
+    [],
+  );
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    debouncedSetSearchTerm(e.target.value);
   };
+
+  useEffect(() => {
+    return () => {
+      debouncedSetSearchTerm.cancel();
+    };
+  }, [debouncedSetSearchTerm]);
 
   return (
     <ActionWrapper>
