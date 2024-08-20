@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Pokemon } from './useFetchAllPokemon';
-import { getPokemonsFromType } from '../services/pokeapi';
+import { getPokemonsFromType, Pokemon } from '../services/pokeapi';
+import { getPokemonsFromTypeWithId } from '../utils';
 
 export const useFetchPokemonsFromType = () => {
   const [pokemonListFromType, setPokemonListFromType] = useState<Pokemon[]>([]);
@@ -12,19 +12,9 @@ export const useFetchPokemonsFromType = () => {
       setLoading(true);
       const data = await getPokemonsFromType(type);
 
-      const parsedData = data.map(
-        (data: { pokemon: Pokemon; slot: number }) => {
-          const { pokemon } = data;
-          const id = parseInt(
-            pokemon.url.split('/').filter(Boolean).pop() || '',
-            10,
-          );
+      const pokemonsFromTypeWithId = getPokemonsFromTypeWithId(data);
 
-          return { ...pokemon, id };
-        },
-      );
-
-      setPokemonListFromType(parsedData);
+      setPokemonListFromType(pokemonsFromTypeWithId);
     } catch (error) {
       console.error(error);
       setError('Failed to fetch Pokémons from type.');

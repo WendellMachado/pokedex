@@ -1,5 +1,21 @@
 export const BASEURL = 'https://pokeapi.co/api/v2/';
 
+export interface PokemonsFromType {
+  pokemon: Pokemon;
+  slot: number;
+}
+
+export interface Pokemon {
+  name: string;
+  url: string;
+  id: number;
+}
+
+export interface PokemonWithoutId {
+  name: string;
+  url: string;
+}
+
 export const getAllPokemon = async () => {
   const response = await fetch(`${BASEURL}pokemon?limit=1302`, {
     method: 'GET',

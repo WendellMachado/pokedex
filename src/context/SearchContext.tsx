@@ -5,8 +5,10 @@ import React, {
   useMemo,
   useEffect,
 } from 'react';
-import { Pokemon, useFetchAllPokemon } from '../hooks/useFetchAllPokemon';
+
 import { useFetchPokemonsFromType } from '../hooks/useFetchPokemonsFromType';
+import { Pokemon } from '../services/pokeapi';
+import { useFetchAllPokemon } from '../hooks/useFetchAllPokemon';
 
 interface SearchContextProps {
   searchTerm: string;
