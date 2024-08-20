@@ -7,3 +7,21 @@ export const getAllPokemon = async () => {
   const data = await response.json();
   return data.results;
 };
+
+export const getAllPokemonTypes = async () => {
+  const response = await fetch(`${BASEURL}type?offset=0&limit=100`, {
+    method: 'GET',
+  });
+  const data = await response.json();
+
+  return data.results;
+};
+
+export const getPokemonsFromType = async (type: string) => {
+  const response = await fetch(`${BASEURL}type/${type}`, {
+    method: 'GET',
+  });
+  const data = await response.json();
+
+  return data.pokemon;
+};

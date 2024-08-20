@@ -5,6 +5,7 @@ import { theme } from '../themes/theme';
 import { useSearchContext } from '../context/SearchContext';
 import debounce from 'lodash.debounce';
 import { useCallback, useEffect } from 'react';
+import { useFetchPokemonTypes } from '../hooks/useFetchAllPokemonTypes';
 
 const ActionWrapper = styled.div`
   display: flex;
@@ -54,7 +55,9 @@ const SelectTypeInput = styled.select`
 `;
 
 export const Search = () => {
-  const { setSearchTerm, searchTerm } = useSearchContext();
+  const { setSearchTerm, searchTerm, selectedType, setSelectedType } =
+    useSearchContext();
+  const { types, loading: typesLoading } = useFetchPokemonTypes();
 
   const debouncedSetSearchTerm = useCallback(
     debounce((value: string) => {
@@ -65,6 +68,10 @@ export const Search = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     debouncedSetSearchTerm(e.target.value);
+  };
+
+  const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedType(e.target.value);
   };
 
   useEffect(() => {
@@ -82,10 +89,21 @@ export const Search = () => {
         onChange={(e) => handleInputChange(e)}
         value={searchTerm}
       />
-      <SelectTypeInput id="typeFilter">
+      <SelectTypeInput
+        id="typeFilter"
+        onChange={(e) => handleTypeChange(e)}
+        value={selectedType}
+      >
         <option value="">{'Busque por tipo'}</option>
-        <option value="Normal">Normal</option>
-        <option value="Fighting">Lutador</option>
+        {typesLoading ? (
+          <option>Carregando...</option>
+        ) : (
+          types.map((type) => (
+            <option key={type} value={type}>
+              {type.charAt(0).toUpperCase() + type.slice(1)}
+            </option>
+          ))
+        )}
       </SelectTypeInput>
     </ActionWrapper>
   );

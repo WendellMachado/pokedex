@@ -6,6 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 import { Pokemon, useFetchAllPokemon } from '../hooks/useFetchAllPokemon';
+import { useFetchPokemonsFromType } from '../hooks/useFetchPokemonsFromType';
 
 interface SearchContextProps {
   searchTerm: string;
@@ -20,14 +21,24 @@ interface SearchContextProps {
   nextPage: () => void;
   prevPage: () => void;
   setPage: (page: number) => void;
+
+  selectedType: string;
+  setSelectedType: (type: string) => void;
 }
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined);
 
 export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedType, setSelectedType] = useState<string>('');
 
   const { pokemonList, loading, error } = useFetchAllPokemon();
+
+  const {
+    fetchPokemonsFromType,
+    pokemonListFromType,
+    resetPokemonListFromType,
+  } = useFetchPokemonsFromType();
 
   const itemsPerPage = 20;
 
@@ -76,10 +87,11 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
 
   const filteredPokemonList = useMemo(() => {
     if (!pokemonList) return [];
+    const listToConsider = selectedType ? pokemonListFromType : pokemonList;
 
     const filtered = isSearchByName()
-      ? filterPokemonByName(pokemonList)
-      : filterPokemonByNumber(pokemonList);
+      ? filterPokemonByName(listToConsider)
+      : filterPokemonByNumber(listToConsider);
 
     const filteredAndPaginated = getPaginatedData(filtered);
 
@@ -88,7 +100,7 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
     setTotalPages(totalFilteredPages);
 
     return filteredAndPaginated;
-  }, [pokemonList, searchTerm, currentPage]);
+  }, [pokemonList, searchTerm, currentPage, pokemonListFromType]);
 
   useEffect(() => {
     setTotalPages(Math.ceil(pokemonList.length / itemsPerPage));
@@ -97,6 +109,15 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+    if (selectedType) {
+      fetchPokemonsFromType(selectedType);
+    } else {
+      resetPokemonListFromType();
+    }
+  }, [selectedType]);
 
   return (
     <SearchContext.Provider
@@ -112,6 +133,8 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
         nextPage,
         prevPage,
         setPage,
+        selectedType,
+        setSelectedType,
       }}
     >
       {children}
