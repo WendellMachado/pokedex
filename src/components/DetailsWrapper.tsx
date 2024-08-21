@@ -169,10 +169,14 @@ export const DetailsWrapper = () => {
           <PokemonName>Chikorita</PokemonName>
           <PokemonNumber>{'#0152'}</PokemonNumber>
           <PokemonTypeContainer>
-            <PokemonType>
+            <PokemonType
+              onClick={() => navigate('/', { state: { type: 'Grass' } })}
+            >
               <p>Grass</p>
             </PokemonType>
-            <PokemonType>
+            <PokemonType
+              onClick={() => navigate('/', { state: { type: 'Fire' } })}
+            >
               <p>Grass</p>
             </PokemonType>
           </PokemonTypeContainer>

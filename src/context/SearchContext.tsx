@@ -9,6 +9,7 @@ import React, {
 import { useFetchPokemonsFromType } from '../hooks/useFetchPokemonsFromType';
 import { Pokemon } from '../services/pokeapi';
 import { useFetchAllPokemon } from '../hooks/useFetchAllPokemon';
+import { useNavigate } from 'react-router-dom';
 
 interface SearchContextProps {
   searchTerm: string;
@@ -30,11 +31,18 @@ interface SearchContextProps {
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined);
 
-export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
+export const SearchProvider = ({
+  children,
+  initialType = '',
+}: {
+  children: React.ReactNode;
+  initialType: string;
+}) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [selectedType, setSelectedType] = useState<string>('');
+  const [selectedType, setSelectedType] = useState<string>(initialType);
 
   const { pokemonList, loading, error } = useFetchAllPokemon();
+  const navigate = useNavigate();
 
   const {
     fetchPokemonsFromType,
@@ -114,6 +122,7 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     setCurrentPage(1);
+    navigate('/', { state: { selectedType: selectedType } });
     if (selectedType) {
       fetchPokemonsFromType(selectedType);
     } else {
