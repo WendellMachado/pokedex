@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import whosThatPokemon from '../assets/whosthatpokemon.png';
 import { Link } from 'react-router-dom';
+import { PokemonImage } from './PokemonImage';
 
 const Card = styled.li`
   background-color: #00000044;
@@ -39,13 +39,7 @@ const PokemonCard = ({ name, sprite, id }: PokemonCardProps) => {
   return (
     <Link to={`/details/${id}`}>
       <Card>
-        <img
-          src={sprite}
-          alt={name}
-          onError={(e) => {
-            e.currentTarget.src = whosThatPokemon;
-          }}
-        />
+        <PokemonImage src={sprite} alt={name} />
         <PokemonName>{name}</PokemonName>
       </Card>
     </Link>
