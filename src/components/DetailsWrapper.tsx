@@ -155,9 +155,7 @@ export const DetailsWrapper = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { pokemonDetails, loading, error } = useFetchPokemonDetails(
-    Number(id) || 1,
-  );
+  const { pokemonDetails } = useFetchPokemonDetails(Number(id) || 1);
 
   const hasTwoTypes = pokemonDetails && pokemonDetails?.types.length > 1;
 
