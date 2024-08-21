@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import whosThatPokemon from '../assets/whosthatpokemon.png';
+import { Link } from 'react-router-dom';
 
 const Card = styled.li`
   background-color: #00000044;
@@ -31,20 +32,23 @@ const PokemonName = styled.h2`
 interface PokemonCardProps {
   name: string;
   sprite: string;
+  id: number;
 }
 
-const PokemonCard = ({ name, sprite }: PokemonCardProps) => {
+const PokemonCard = ({ name, sprite, id }: PokemonCardProps) => {
   return (
-    <Card>
-      <img
-        src={sprite}
-        alt={name}
-        onError={(e) => {
-          e.currentTarget.src = whosThatPokemon;
-        }}
-      />
-      <PokemonName>{name}</PokemonName>
-    </Card>
+    <Link to={`/details/${id}`}>
+      <Card>
+        <img
+          src={sprite}
+          alt={name}
+          onError={(e) => {
+            e.currentTarget.src = whosThatPokemon;
+          }}
+        />
+        <PokemonName>{name}</PokemonName>
+      </Card>
+    </Link>
   );
 };
 

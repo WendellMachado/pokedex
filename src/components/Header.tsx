@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import pokeballImg from '../assets/pokeball.png';
 import { Search } from './Search';
 import { theme } from '../themes/theme';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.header`
   background: linear-gradient(to right, #f14c5c 0%, #ed1f33 50%, #f14c5c 100%);
@@ -50,12 +51,16 @@ const TitleWrapper = styled.div`
 const Title = styled.h1``;
 
 export const Header = () => {
+  const location = useLocation();
+
+  const isHomePage = location.pathname === '/';
+
   return (
     <Container>
       <PokeballLeft src={pokeballImg} alt="Pokeball" />
       <TitleWrapper>
         <Title>Pokémon Pokédex</Title>
-        <Search />
+        {isHomePage && <Search />}
       </TitleWrapper>
       <PokeballRight src={pokeballImg} alt="Pokeball" />
     </Container>

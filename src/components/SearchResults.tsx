@@ -31,6 +31,7 @@ export const SearchResults = () => {
               name={pokemon.name}
               sprite={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
               key={pokemon.id}
+              id={pokemon.id}
             />
           );
         })}
