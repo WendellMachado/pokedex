@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import whosThatPokemon from '../assets/whosthatpokemon.png';
+import { useFetchPokemonDetails } from '../hooks/useFetchPokemonDetails';
 
 const Wrapper = styled.div`
   display: flex;
@@ -51,6 +52,23 @@ const DetailsCard = styled.div`
   background-color: #00000044;
 `;
 
+const ShinyDetailsCard = styled.div`
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 16px;
+  border: 4px solid #fad958;
+  background: linear-gradient(217deg, #ede9c7 14.29%, #e1c863 95.26%);
+`;
+
+const PokemonImage = styled.img`
+  width: 20%;
+  object-fit: contain;
+`;
+
 const PokemonName = styled.h2`
   color: #333;
   text-align: center;
@@ -97,19 +115,6 @@ const PokemonType = styled.div`
   }
 `;
 
-const ShinyDetailsCard = styled.div`
-  display: flex;
-  padding: 1rem;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  align-self: stretch;
-  border-radius: 16px;
-  border: 4px solid #fad958;
-  background: linear-gradient(217deg, #ede9c7 14.29%, #e1c863 95.26%);
-`;
-
 const ShinyVersion = styled.div`
   color: #2d2927;
   text-align: center;
@@ -148,7 +153,12 @@ export const DetailsWrapper = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  console.log(id);
+  const { pokemonDetails, loading, error } = useFetchPokemonDetails(
+    Number(id) || 1,
+  );
+
+  const hasTwoTypes = pokemonDetails && pokemonDetails?.types.length > 1;
+
   return (
     <Wrapper>
       <ButtonsContainer>
@@ -157,51 +167,82 @@ export const DetailsWrapper = () => {
       <DetailsCardsWrapper>
         <DetailsCard>
           {' '}
-          <img
+          <PokemonImage
             src={
-              'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/152.png'
+              pokemonDetails?.sprites.other['official-artwork'].front_default
             }
-            alt={'name'}
+            alt={pokemonDetails?.name}
             onError={(e) => {
               e.currentTarget.src = whosThatPokemon;
             }}
           />
-          <PokemonName>Chikorita</PokemonName>
-          <PokemonNumber>{'#0152'}</PokemonNumber>
+          <PokemonName>{pokemonDetails?.name}</PokemonName>
+          <PokemonNumber>{pokemonDetails?.id}</PokemonNumber>
           <PokemonTypeContainer>
             <PokemonType
-              onClick={() => navigate('/', { state: { type: 'Grass' } })}
+              onClick={() =>
+                navigate('/', {
+                  state: { type: pokemonDetails?.types[0].type.name },
+                })
+              }
             >
-              <p>Grass</p>
+              <p>{pokemonDetails?.types[0].type.name}</p>
             </PokemonType>
-            <PokemonType
-              onClick={() => navigate('/', { state: { type: 'Fire' } })}
-            >
-              <p>Grass</p>
-            </PokemonType>
+            {hasTwoTypes && (
+              <PokemonType
+                onClick={() =>
+                  navigate('/', {
+                    state: { type: pokemonDetails?.types[1].type.name },
+                  })
+                }
+              >
+                <p>{pokemonDetails?.types[1].type.name}</p>
+              </PokemonType>
+            )}
           </PokemonTypeContainer>
         </DetailsCard>
         <ShinyDetailsCard>
           {' '}
-          <img
-            src={
-              'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/152.png'
-            }
-            alt={'name'}
+          <PokemonImage
+            src={pokemonDetails?.sprites.other['official-artwork'].front_shiny}
+            alt={pokemonDetails?.name}
             onError={(e) => {
               e.currentTarget.src = whosThatPokemon;
             }}
           />
           <ShinyVersion>Versão Shiny</ShinyVersion>
+          <PokemonNumber>{pokemonDetails?.id}</PokemonNumber>
+          <PokemonTypeContainer>
+            <PokemonType
+              onClick={() =>
+                navigate('/', {
+                  state: { type: pokemonDetails?.types[0].type.name },
+                })
+              }
+            >
+              <p>{pokemonDetails?.types[0].type.name}</p>
+            </PokemonType>
+            {hasTwoTypes && (
+              <PokemonType
+                onClick={() =>
+                  navigate('/', {
+                    state: { type: pokemonDetails?.types[1].type.name },
+                  })
+                }
+              >
+                <p>{pokemonDetails?.types[1].type.name}</p>
+              </PokemonType>
+            )}
+          </PokemonTypeContainer>
         </ShinyDetailsCard>
       </DetailsCardsWrapper>
       <StatusCard>
-        <Status>HP: 45</Status>
-        <Status>Ataque: 49</Status>
-        <Status>Defesa: 65</Status>
-        <Status>Ataque Especial: 49</Status>
-        <Status>Defesa Especial: 65</Status>
-        <Status>Velocidade: 45</Status>
+        <Status>HP: {pokemonDetails?.stats[0].base_stat}</Status>
+        <Status>Ataque: {pokemonDetails?.stats[1].base_stat}</Status>
+        <Status>Defesa: {pokemonDetails?.stats[2].base_stat}</Status>
+        <Status>Ataque Especial: {pokemonDetails?.stats[3].base_stat}</Status>
+        <Status>Defesa Especial: {pokemonDetails?.stats[4].base_stat}</Status>
+        <Status>Velocidade: {pokemonDetails?.stats[5].base_stat}</Status>
       </StatusCard>
     </Wrapper>
   );

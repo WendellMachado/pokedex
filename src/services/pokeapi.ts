@@ -16,6 +16,52 @@ export interface PokemonWithoutId {
   url: string;
 }
 
+export interface PokemonDetails {
+  id: number;
+  name: string;
+  sprites: Sprites;
+  stats: Stat[];
+  types: Type[];
+}
+
+interface Sprites {
+  front_default: string;
+  front_shiny: string;
+  home: HomeSprites;
+  other: {
+    'official-artwork': OfficialArtworkSprites;
+  };
+}
+
+interface HomeSprites {
+  front_default: string;
+  front_female: string;
+  front_shiny: string;
+  front_shiny_female: string;
+}
+
+interface OfficialArtworkSprites {
+  front_default: string;
+  front_shiny: string;
+}
+
+interface Stat {
+  base_stat: number;
+  effort: number;
+  stat: {
+    name: string;
+    url: string;
+  };
+}
+
+interface Type {
+  slot: number;
+  type: {
+    name: string;
+    url: string;
+  };
+}
+
 export const getAllPokemon = async () => {
   const response = await fetch(`${BASEURL}pokemon?limit=1302`, {
     method: 'GET',
@@ -40,4 +86,14 @@ export const getPokemonsFromType = async (type: string) => {
   const data = await response.json();
 
   return data.pokemon;
+};
+
+export const getPokemonDetails = async (id: number) => {
+  const response = await fetch(`${BASEURL}/pokemon/${id}`, {
+    method: 'GET',
+  });
+
+  const data = await response.json();
+
+  return data;
 };
