@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import whosThatPokemon from '../assets/whosthatpokemon.png';
 import { useFetchPokemonDetails } from '../hooks/useFetchPokemonDetails';
+import { PokemonTypeColors, theme } from '../themes/theme';
 
 const Wrapper = styled.div`
   display: flex;
@@ -100,6 +101,7 @@ const PokemonType = styled.div`
   background-color: ${(props) => props.color || 'green'};
   padding: 0.5rem;
   border-radius: 4px;
+  cursor: pointer;
 
   p {
     color: #fff;
@@ -159,6 +161,11 @@ export const DetailsWrapper = () => {
 
   const hasTwoTypes = pokemonDetails && pokemonDetails?.types.length > 1;
 
+  const getTypeColor = (typeIndex: number) => {
+    const type = pokemonDetails?.types[typeIndex].type.name || 'bug';
+    return theme.pokemonTypesColors[type as keyof PokemonTypeColors];
+  };
+
   return (
     <Wrapper>
       <ButtonsContainer>
@@ -185,6 +192,7 @@ export const DetailsWrapper = () => {
                   state: { type: pokemonDetails?.types[0].type.name },
                 })
               }
+              color={getTypeColor(0)}
             >
               <p>{pokemonDetails?.types[0].type.name}</p>
             </PokemonType>
@@ -195,6 +203,7 @@ export const DetailsWrapper = () => {
                     state: { type: pokemonDetails?.types[1].type.name },
                   })
                 }
+                color={getTypeColor(1)}
               >
                 <p>{pokemonDetails?.types[1].type.name}</p>
               </PokemonType>
@@ -219,6 +228,7 @@ export const DetailsWrapper = () => {
                   state: { type: pokemonDetails?.types[0].type.name },
                 })
               }
+              color={getTypeColor(0)}
             >
               <p>{pokemonDetails?.types[0].type.name}</p>
             </PokemonType>
@@ -229,6 +239,7 @@ export const DetailsWrapper = () => {
                     state: { type: pokemonDetails?.types[1].type.name },
                   })
                 }
+                color={getTypeColor(1)}
               >
                 <p>{pokemonDetails?.types[1].type.name}</p>
               </PokemonType>
