@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { getPokemonsFromType, Pokemon } from '../services/pokeapi';
-import { getPokemonsFromTypeWithId } from '../utils';
+import { getPokemonsFromTypeWithId } from '../utilities/searchUtils';
 
 export const useFetchPokemonsFromType = () => {
   const [pokemonListFromType, setPokemonListFromType] = useState<Pokemon[]>([]);
