@@ -33,6 +33,6 @@ export const PokemonImage = (props: PokemonImgProps) => {
         e.currentTarget.src = whosThatPokemon;
       }}
       style={style}
-    />
+    ></img>
   );
 };

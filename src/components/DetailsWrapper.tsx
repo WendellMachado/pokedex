@@ -29,13 +29,6 @@ const GoBackButton = styled.button`
   cursor: pointer;
 `;
 
-const DetailsCardsWrapper = styled.div`
-  display: flex;
-  width: 50%;
-  justify-content: center;
-  gap: 1rem;
-`;
-
 const CardBase = styled.div`
   display: flex;
   flex-direction: column;
@@ -43,30 +36,40 @@ const CardBase = styled.div`
   padding: 1rem;
   gap: 1rem;
   border-radius: 16px;
+  background-color: #00000044;
 `;
 
 const DetailsCard = styled(CardBase)`
   background-color: #00000044;
 `;
 
-const ShinyDetailsCard = styled(CardBase)`
-  border: 4px solid #fad958;
-  background: linear-gradient(217deg, #ede9c7 14.29%, #e1c863 95.26%);
-`;
-
 const PokemonName = styled.h2`
   font-family: 'PokemonClassic';
-  font-size: 1rem;
+  font-size: 1.2rem;
   text-align: center;
   color: #333;
-  width: 100%;
+
+  @media (max-width: ${theme.mediaQueryBreakpoints.cellphone}) {
+    font-size: 0.8rem;
+  }
 `;
 
 const PokemonNumber = styled.p`
   font-family: 'PokemonClassic';
-  font-size: 0.6rem;
+  font-size: 1rem;
   text-align: center;
   color: #333;
+  @media (max-width: ${theme.mediaQueryBreakpoints.cellphone}) {
+    font-size: 0.5rem;
+  }
+`;
+
+const NameNumberWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  gap: 0.5rem;
   width: 100%;
 `;
 
@@ -89,13 +92,6 @@ const PokemonType = styled.div<{ color: string }>`
   }
 `;
 
-const ShinyVersion = styled.div`
-  font-family: 'PokemonClassic';
-  font-size: 1rem;
-  color: #2d2927;
-  text-align: center;
-`;
-
 const StatusCard = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -115,9 +111,33 @@ const Status = styled.div`
   font-size: 0.8rem;
 `;
 
+const SpritesWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+`;
+
 const PokemonImgStyle: React.CSSProperties = {
-  width: '20%',
-  objectFit: 'contain',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  borderRadius: '16px',
+  backgroundColor: '#00000044',
+  background: '#00000044',
+  width: '30%',
+};
+
+const PokemonShinyImgStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  borderRadius: '16px',
+  backgroundColor: '#00000044',
+  border: '4px solid #fad958',
+  background: 'linear-gradient(217deg, #ede9c7 14.29%, #e1c863 95.26%)',
+  width: '30%',
 };
 
 export const DetailsWrapper = () => {
@@ -128,8 +148,6 @@ export const DetailsWrapper = () => {
   if (!pokemonDetails) {
     return <Loading />;
   }
-
-  console.log(pokemonDetails);
 
   const hasTwoTypes = pokemonDetails.types.length > 1;
 
@@ -149,48 +167,46 @@ export const DetailsWrapper = () => {
       <ButtonsContainer>
         <GoBackButton onClick={() => navigate(-1)}>Voltar</GoBackButton>
       </ButtonsContainer>
-      <DetailsCardsWrapper>
-        <DetailsCard>
-          <PokemonImage
-            src={
-              pokemonDetails.sprites.other['official-artwork'].front_default ||
-              whosThatPokemon
-            }
-            alt={pokemonDetails.name}
-            style={PokemonImgStyle}
-          />
-          <PokemonName>{pokemonDetails.name}</PokemonName>
-          <PokemonNumber>{pokemonDetails.id}</PokemonNumber>
-          <PokemonTypeContainer>
+      <NameNumberWrapper>
+        <PokemonNumber>#{pokemonDetails.id}</PokemonNumber>
+        <PokemonName>{pokemonDetails.name}</PokemonName>
+      </NameNumberWrapper>
+      <SpritesWrapper>
+        <PokemonImage
+          src={
+            pokemonDetails.sprites.other['official-artwork'].front_default ||
+            whosThatPokemon
+          }
+          alt={pokemonDetails.name}
+          style={PokemonImgStyle}
+        />
+        <PokemonImage
+          src={
+            pokemonDetails.sprites.other['official-artwork'].front_shiny ||
+            whosThatPokemon
+          }
+          style={PokemonShinyImgStyle}
+          alt={pokemonDetails.name}
+        />
+      </SpritesWrapper>
+      <DetailsCard>
+        <PokemonTypeContainer>
+          <PokemonType
+            color={getTypeColor(0)}
+            onClick={() => handleTypeClick(0)}
+          >
+            <p>{pokemonDetails.types[0].type.name}</p>
+          </PokemonType>
+          {hasTwoTypes && (
             <PokemonType
-              color={getTypeColor(0)}
-              onClick={() => handleTypeClick(0)}
+              color={getTypeColor(1)}
+              onClick={() => handleTypeClick(1)}
             >
-              <p>{pokemonDetails.types[0].type.name}</p>
+              <p>{pokemonDetails.types[1].type.name}</p>
             </PokemonType>
-            {hasTwoTypes && (
-              <PokemonType
-                color={getTypeColor(1)}
-                onClick={() => handleTypeClick(1)}
-              >
-                <p>{pokemonDetails.types[1].type.name}</p>
-              </PokemonType>
-            )}
-          </PokemonTypeContainer>
-        </DetailsCard>
-        <ShinyDetailsCard>
-          <PokemonImage
-            src={
-              pokemonDetails.sprites.other['official-artwork'].front_shiny ||
-              whosThatPokemon
-            }
-            style={PokemonImgStyle}
-            alt={pokemonDetails.name}
-          />
-          <ShinyVersion>Versão Shiny</ShinyVersion>
-          <PokemonNumber>{pokemonDetails.id}</PokemonNumber>
-        </ShinyDetailsCard>
-      </DetailsCardsWrapper>
+          )}
+        </PokemonTypeContainer>
+      </DetailsCard>
       <StatusCard>
         {pokemonDetails.stats.map((stat) => (
           <Status key={stat.stat.name}>
