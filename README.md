@@ -36,10 +36,10 @@ Para configurar e executar este projeto localmente, siga estas etapas:
 
 O Node.js inclui o npm (Node Package Manager). Você pode baixar o instalador adequado para o seu sistema operacional no site oficial do Node.js e seguir as instruções de instalação.
 
-- **No macOS: Você pode usar o Homebrew para instalar o Node.js:
+- **No macOS:** Você pode usar o Homebrew para instalar o Node.js:
 
   ```bash
-    brew install node
+  brew install node
 
 - **No Windows:** Baixe o instalador do site oficial <https://nodejs.org/en> e siga as instruções.
 
