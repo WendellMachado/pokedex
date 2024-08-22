@@ -88,6 +88,3 @@ Substitua **{numero_pokemon}** pelo número do Pokémon para obter o sprite.
 - **Styled Components:** Biblioteca para estilização de componentes React usando literais de template.
 - **React Router:** Biblioteca para gerenciamento de rotas e navegação.
 - **i18next:** Framework de internacionalização para React.
-
-# Licença
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo LICENSE para mais detalhes.
