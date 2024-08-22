@@ -3,6 +3,8 @@ import PokemonCard from './PokemonCard';
 import { theme } from '../themes/theme';
 import { useSearchContext } from '../context/SearchContext';
 import { Pagination } from './Pagination';
+import { LanguageSwitcher } from './LanguageControls';
+import { useTranslation } from 'react-i18next';
 
 const ResultsList = styled.ul`
   display: grid;
@@ -28,14 +30,16 @@ const NoPokemonsMessage = styled.div`
 
 export const SearchResults = () => {
   const { filteredPokemonList } = useSearchContext();
+  const { t } = useTranslation();
 
   if (!filteredPokemonList || filteredPokemonList.length === 0) {
-    return <NoPokemonsMessage>Nenhum Pokemon Encontrado</NoPokemonsMessage>;
+    return <NoPokemonsMessage>{t('noResults')}</NoPokemonsMessage>;
   }
 
   if (filteredPokemonList)
     return (
       <>
+        <LanguageSwitcher />
         <ResultsList>
           {filteredPokemonList.map((pokemon) => {
             return (

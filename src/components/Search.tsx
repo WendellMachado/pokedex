@@ -6,6 +6,7 @@ import { useSearchContext } from '../context/SearchContext';
 import debounce from 'lodash.debounce';
 import { useCallback, useEffect } from 'react';
 import { useFetchPokemonTypes } from '../hooks/useFetchAllPokemonTypes';
+import { useTranslation } from 'react-i18next';
 
 const ActionWrapper = styled.div`
   display: flex;
@@ -58,6 +59,7 @@ export const Search = () => {
   const { setSearchTerm, searchTerm, selectedType, setSelectedType } =
     useSearchContext();
   const { types, loading: typesLoading } = useFetchPokemonTypes();
+  const { t } = useTranslation();
 
   const debouncedSetSearchTerm = useCallback(
     debounce((value: string) => {
@@ -83,7 +85,7 @@ export const Search = () => {
   return (
     <ActionWrapper>
       <SearchInput
-        placeholder="Busque por nome ou nº"
+        placeholder={t('searchPlaceholder')}
         type="text"
         id="searchInput"
         onChange={(e) => handleInputChange(e)}
@@ -94,7 +96,7 @@ export const Search = () => {
         onChange={(e) => handleTypeChange(e)}
         value={selectedType}
       >
-        <option value="">{'Busque por tipo'}</option>
+        <option value="">{t('typeFilterPlaceholder')}</option>
         {typesLoading ? (
           <option>Carregando...</option>
         ) : (

@@ -7,6 +7,7 @@ import { SpritesWrapper } from './SpritesWrapper';
 import { NameNumberWrapper } from './NameNumberWrapper';
 
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 const Wrapper = styled.div`
   display: flex;
@@ -45,6 +46,7 @@ export const DetailsWrapper = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { pokemonDetails } = useFetchPokemonDetails(Number(id) || 1);
+  const { t } = useTranslation();
 
   if (!pokemonDetails) {
     return <Loading />;
@@ -55,7 +57,7 @@ export const DetailsWrapper = () => {
   return (
     <Wrapper>
       <ButtonsContainer>
-        <GoBackButton onClick={() => navigate(-1)}>Voltar</GoBackButton>
+        <GoBackButton onClick={() => navigate(-1)}>{t('goBack')}</GoBackButton>
       </ButtonsContainer>
       <NameNumberWrapper id={pokemonDetails.id} name={pokemonDetails.name} />
       <SpritesWrapper sprites={pokemonDetails.sprites} />

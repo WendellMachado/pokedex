@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useSearchContext } from '../context/SearchContext';
 import { theme } from '../themes/theme';
+import { useTranslation } from 'react-i18next';
 
 const PaginationContainer = styled.div`
   display: flex;
@@ -43,6 +44,8 @@ const PaginationContainer = styled.div`
 `;
 
 export const Pagination = () => {
+  const { t } = useTranslation();
+
   const pageNumbers = [];
   const totalPageNumbers = 5;
   const { currentPage, setPage, totalPages } = useSearchContext();
@@ -76,7 +79,7 @@ export const Pagination = () => {
         onClick={() => setPage(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        Previous
+        {t('previous')}
       </button>
       {pageNumbers.map((number, index) =>
         typeof number === 'number' ? (
@@ -95,7 +98,7 @@ export const Pagination = () => {
         onClick={() => setPage(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        Next
+        {t('next')}
       </button>
       <button
         onClick={() => setPage(currentPage + 10)}

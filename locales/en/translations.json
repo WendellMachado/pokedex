@@ -1,0 +1,10 @@
+{
+  "searchPlaceholder": "Search by name or number",
+  "typeFilterPlaceholder": "Search by type",
+  "loading": "Loading...",
+  "goBackButton": "Go Back",
+  "noResults": "No Pokémon found",
+  "goBack": "go back",
+  "next": "next",
+  "previous": "previous"
+}
