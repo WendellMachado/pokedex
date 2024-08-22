@@ -19,24 +19,36 @@ const ResultsList = styled.ul`
   }
 `;
 
+const NoPokemonsMessage = styled.div`
+  text-align: center;
+  padding: 20px;
+  font-size: 2rem;
+  color: #000000;
+`;
+
 export const SearchResults = () => {
   const { filteredPokemonList } = useSearchContext();
 
-  return (
-    <>
-      <ResultsList>
-        {filteredPokemonList.map((pokemon) => {
-          return (
-            <PokemonCard
-              name={pokemon.name}
-              sprite={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
-              key={pokemon.id}
-              id={pokemon.id}
-            />
-          );
-        })}
-      </ResultsList>
-      <Pagination />
-    </>
-  );
+  if (!filteredPokemonList || filteredPokemonList.length === 0) {
+    return <NoPokemonsMessage>Nenhum Pokemon Encontrado</NoPokemonsMessage>;
+  }
+
+  if (filteredPokemonList)
+    return (
+      <>
+        <ResultsList>
+          {filteredPokemonList.map((pokemon) => {
+            return (
+              <PokemonCard
+                name={pokemon.name}
+                sprite={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+                key={pokemon.id}
+                id={pokemon.id}
+              />
+            );
+          })}
+        </ResultsList>
+        <Pagination />
+      </>
+    );
 };
